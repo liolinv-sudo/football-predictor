@@ -3,7 +3,7 @@ import requests
 
 app = FastAPI()
 
-API_KEY = "70054ffca7094d3dbec1f83b18d10b67"
+API_KEY = os.getenv("API_KEY")
 
 headers = {
     "X-Auth-Token": API_KEY
