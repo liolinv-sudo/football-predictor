@@ -16,4 +16,17 @@ def get_matches():
     url = "https://api.football-data.org/v4/matches"
     response = requests.get(url, headers=headers)
 
-    return response.json()["matches"]
+    data = response.json()["matches"]
+
+    result = []
+
+    for m in data[:15]:  # begränsa först
+
+        result.append({
+            "home": m["homeTeam"]["name"],
+            "away": m["awayTeam"]["name"],
+            "competition": m["competition"]["name"],
+            "status": m["status"]
+        })
+
+    return result
