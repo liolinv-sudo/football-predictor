@@ -1,5 +1,6 @@
-from fastapi import FastAPI
+import os
 import requests
+from fastapi import FastAPI
 
 app = FastAPI()
 
@@ -9,32 +10,10 @@ headers = {
     "X-Auth-Token": API_KEY
 }
 
-def fetch_matches():
-    url = "https://api.football-data.org/v4/matches"
-    response = requests.get(url, headers=headers)
-    return response.json()["matches"]
-
-
-@app.get("/")
-def root():
-    return {"message": "Football Predictor"}
-
-
 @app.get("/matches")
 def get_matches():
 
-    raw = fetch_matches()
+    url = "https://api.football-data.org/v4/matches"
+    response = requests.get(url, headers=headers)
 
-    result = []
-
-    for m in raw[:10]:
-
-        home = m["homeTeam"]["name"]
-        away = m["awayTeam"]["name"]
-
-        result.append({
-            "home": home,
-            "away": away
-        })
-
-    return result
+    return response.json()["matches"]
