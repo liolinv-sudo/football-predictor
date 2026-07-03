@@ -6,6 +6,8 @@ app = FastAPI()
 
 API_KEY = os.getenv("API_KEY")
 
+ODDS_API_KEY = os.getenv("ODDS_API_KEY")
+
 headers = {
     "X-Auth-Token": API_KEY
 }
