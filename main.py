@@ -21,6 +21,25 @@ def fetch_odds():
     response = requests.get(url, params=params)
     return response.json()
 
+def get_best_odds(match, odds_data):
+
+    for game in odds_data:
+
+        if (game["home_team"] == match["homeTeam"]["name"] and
+            game["away_team"] == match["awayTeam"]["name"]):
+
+            outcomes = game["bookmakers"][0]["markets"][0]["outcomes"]
+
+            return {
+                outcome["name"]: outcome["price"]
+                for outcome in outcomes
+            }
+
+    return None
+
+
+
+
 headers = {
     "X-Auth-Token": API_KEY
 }
@@ -28,32 +47,33 @@ headers = {
 @app.get("/matches")
 def get_matches():
 
-    url = "https://api.football-data.org/v4/matches"
-    response = requests.get(url, headers=headers)
+    matches = requests.get(
+        "https://api.football-data.org/v4/matches",
+        headers=headers
+    ).json()["matches"]
 
-    data = response.json()["matches"]
+    odds_data = fetch_odds()
 
     result = []
 
-    for m in data[:10]:
+    for m in matches[:10]:
+
+        odds = get_best_odds(m, odds_data)
+
+        if not odds:
+            continue
 
         home = m["homeTeam"]["name"]
-        away = m["awayTeam"]["name"]
 
-        # 🔧 tillfälliga odds (sen ersätter vi med riktiga)
-        home_odds = 2.20
+        home_prob = 0.45  # (sen förbättrar vi modellen)
 
-        # 🎲 enkel sannolikhetsmodell
-        home_prob = 0.45
-
-        # 💰 EV-beräkning
-        ev = calculate_ev(home_prob, home_odds)
+        ev = calculate_ev(home_prob, odds[home])
 
         result.append({
             "home": home,
-            "away": away,
+            "away": m["awayTeam"]["name"],
+            "odds": odds,
             "home_probability": home_prob,
-            "home_odds": home_odds,
             "ev": round(ev, 3)
         })
 
