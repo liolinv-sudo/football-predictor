@@ -20,13 +20,26 @@ def get_matches():
 
     result = []
 
-    for m in data[:15]:  # begränsa först
+    for m in data[:10]:
+
+        home = m["homeTeam"]["name"]
+        away = m["awayTeam"]["name"]
+
+        # 🔧 tillfälliga odds (sen ersätter vi med riktiga)
+        home_odds = 2.20
+
+        # 🎲 enkel sannolikhetsmodell
+        home_prob = 0.45
+
+        # 💰 EV-beräkning
+        ev = calculate_ev(home_prob, home_odds)
 
         result.append({
-            "home": m["homeTeam"]["name"],
-            "away": m["awayTeam"]["name"],
-            "competition": m["competition"]["name"],
-            "status": m["status"]
+            "home": home,
+            "away": away,
+            "home_probability": home_prob,
+            "home_odds": home_odds,
+            "ev": round(ev, 3)
         })
 
     return result
