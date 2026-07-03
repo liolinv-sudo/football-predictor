@@ -2,6 +2,7 @@ import os
 import requests
 from fastapi import FastAPI
 from predictor import probabilities
+from data import TEAM_ELO
 
 app = FastAPI()
 
