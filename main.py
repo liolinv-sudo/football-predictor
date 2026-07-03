@@ -6,16 +6,8 @@ matches = [
     {
         "home": "Malmö FF",
         "away": "AIK",
-        "home_win": 45,
-        "draw": 28,
-        "away_win": 27
-    },
-    {
-        "home": "Hammarby",
-        "away": "Djurgården",
-        "home_win": 39,
-        "draw": 30,
-        "away_win": 31
+        "home_probability": 0.45,
+        "home_odds": 2.50
     }
 ]
 
@@ -25,4 +17,19 @@ def root():
 
 @app.get("/matches")
 def get_matches():
-    return matches
+
+    result = []
+
+    for match in matches:
+
+        ev = (match["home_probability"] * match["home_odds"]) - 1
+
+        result.append({
+            "home": match["home"],
+            "away": match["away"],
+            "probability": match["home_probability"],
+            "odds": match["home_odds"],
+            "ev": round(ev, 3)
+        })
+
+    return result
