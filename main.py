@@ -1,3 +1,5 @@
+from predictor import calculate_ev
+
 from fastapi import FastAPI
 
 app = FastAPI()
