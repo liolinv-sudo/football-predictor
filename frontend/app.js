@@ -1,55 +1,34 @@
 async function loadMatches() {
 
-    const response = await fetch(
-        "https://DIN-APP.onrender.com/matches"
-    );
+    const res = await fetch("/matches");
+    let matches = await res.json();
 
-    const matches = await response.json();
-
-    const container =
-        document.getElementById("matches");
-
+    // 🔝 sortera EV
     matches.sort((a, b) => b.ev - a.ev);
 
-    matches.forEach(match => {
+    const body = document.getElementById("body");
+    body.innerHTML = "";
 
-        const div =
-            document.createElement("div");
+    matches.forEach(m => {
 
-        div.className = "match";
+        const tr = document.createElement("tr");
 
-        div.innerHTML = `
-            <h3>${match.home} - ${match.away}</h3>
+        // 🟢 / 🔴 färg
+        if (m.ev > 0) {
+            tr.classList.add("row-green");
+        } else {
+            tr.classList.add("row-red");
+        }
 
-            <p>EV: ${match.ev}</p>
-
-            <p>
-                Odds:
-                ${JSON.stringify(match.odds)}
-            </p>
+        tr.innerHTML = `
+            <td>${m.home} - ${m.away}</td>
+            <td>${m.ev.toFixed(3)}</td>
+            <td>${(m.kelly * 100).toFixed(1)}%</td>
+            <td>${JSON.stringify(m.odds)}</td>
         `;
 
-        container.appendChild(div);
+        body.appendChild(tr);
     });
 }
 
 loadMatches();
-
-let evColor = match.ev > 0 ? "green" : "red";
-div.innerHTML = `
-    <h3>${match.home} - ${match.away}</h3>
-
-    <p style="color:${evColor}">
-        EV: ${match.ev}
-    </p>
-`;
-
-<p>Kelly: ${(match.kelly * 100).toFixed(1)}%</p>
-
-if (match.arbitrage) {
-    div.innerHTML += `
-        <p style="color:blue;">
-            🟢 Arbitrage: ${(match.arb_percent * 100).toFixed(2)}%
-        </p>
-    `;
-}
