@@ -46,38 +46,47 @@ headers = {
     "X-Auth-Token": API_KEY
 }
 
-@app.get("/matches")
+#@app.get("/matches")
+#def get_matches():
+
+  @app.get("/matches")
 def get_matches():
 
     matches = requests.get(
         "https://api.football-data.org/v4/matches",
-        headers=headers
+        headers={"X-Auth-Token": os.getenv("API_KEY")}
     ).json()["matches"]
 
     odds_data = fetch_odds()
 
     result = []
 
-    for m in matches[:10]:
+    for m in matches[:15]:
 
-        odds = get_best_odds(m, odds_data)
+        home = m["homeTeam"]["name"]
+        away = m["awayTeam"]["name"]
+
+        probs = get_probabilities(home, away)
+        odds = get_match_odds(home, away, odds_data)
 
         if not odds:
             continue
 
-        home = m["homeTeam"]["name"]
+        ev = calculate_ev(probs["home"], odds[home])
 
-        home_prob = 0.45  # (sen förbättrar vi modellen)
+        # 🔥 FILTER: visa bara +EV
+        if ev > 0:
 
-        ev = calculate_ev(home_prob, odds[home])
+            result.append({
+                "home": home,
+                "away": away,
+                "odds": odds,
+                "probabilities": probs,
+                "ev": round(ev, 3)
+            })
 
-        result.append({
-            "home": home,
-            "away": m["awayTeam"]["name"],
-            "odds": odds,
-            "home_probability": home_prob,
-            "ev": round(ev, 3)
-        })
+    # 🔥 SORTERA bästa först
+    result.sort(key=lambda x: x["ev"], reverse=True)
 
     return result
 
