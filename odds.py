@@ -32,38 +32,31 @@ def fetch_odds():
 # -------------------------
 # SAFE MATCH ODDS
 # -------------------------
+def normalize(name):
+    return name.lower().strip()
+
+
 def get_match_odds(home, away, odds_data):
 
-    if not odds_data:
-        return None
+    home_n = normalize(home)
+    away_n = normalize(away)
 
     for game in odds_data:
 
-        try:
-            if game.get("home_team") != home:
-                continue
+        game_home = normalize(game.get("home_team", ""))
+        game_away = normalize(game.get("away_team", ""))
 
-            if game.get("away_team") != away:
-                continue
+        # flexibel matchning
+        if (home_n == game_home and away_n == game_away) or \
+           (home_n == game_away and away_n == game_home):
 
-            bookmakers = game.get("bookmakers", [])
-            if not bookmakers:
-                continue
+            outcomes = game["bookmakers"][0]["markets"][0]["outcomes"]
 
-            markets = bookmakers[0].get("markets", [])
-            if not markets:
-                continue
-
-            outcomes = markets[0].get("outcomes", [])
-            if not outcomes:
-                continue
-
-            return {
-                o["name"]: o["price"]
+            odds_map = {
+                normalize(o["name"]): o["price"]
                 for o in outcomes
             }
 
-        except Exception:
-            continue
+            return odds_map
 
     return None
