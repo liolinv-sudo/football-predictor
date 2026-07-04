@@ -3,8 +3,6 @@ import requests
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
-
-from predictor import get_probabilities, calculate_ev, kelly
 from odds import fetch_odds, get_match_odds
 from predictor import (
     get_probabilities,
