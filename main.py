@@ -3,6 +3,7 @@ import requests
 from fastapi import FastAPI
 from predictor import probabilities
 from odds import fetch_odds, get_match_odds
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
 
