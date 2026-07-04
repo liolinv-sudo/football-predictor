@@ -43,3 +43,5 @@ div.innerHTML = `
         EV: ${match.ev}
     </p>
 `;
+
+<p>Kelly: ${(match.kelly * 100).toFixed(1)}%</p>
