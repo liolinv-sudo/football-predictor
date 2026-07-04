@@ -83,13 +83,14 @@ def get_matches():
         # 🔥 FILTER: visa bara +EV
         if ev > 0:
 
-            result.append({
-                "home": home,
-                "away": away,
-                "odds": odds,
-                "probabilities": probs,
-                "ev": round(ev, 3)
-            })
+result.append({
+    "home": home,
+    "away": away,
+    "ev": round(ev, 3),
+    "odds": odds,
+    "kelly": kelly_value   # <-- viktigt
+})
+            
 
     # 🔥 SORTERA bästa först
     result.sort(key=lambda x: x["ev"], reverse=True)
@@ -104,5 +105,6 @@ app.mount(
     StaticFiles(directory=os.path.join(BASE_DIR, "frontend")),
     name="frontend"
 )
+
 
 
