@@ -9,6 +9,8 @@ async function loadMatches() {
     const container =
         document.getElementById("matches");
 
+    matches.sort((a, b) => b.ev - a.ev);
+
     matches.forEach(match => {
 
         const div =
