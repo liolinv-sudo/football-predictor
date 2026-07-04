@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from predictor import probabilities
 from odds import fetch_odds, get_match_odds
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 app = FastAPI()
