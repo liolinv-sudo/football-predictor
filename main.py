@@ -1,4 +1,4 @@
-7import os
+import os
 import requests
 from fastapi import FastAPI
 from predictor import probabilities
