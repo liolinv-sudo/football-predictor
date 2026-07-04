@@ -78,6 +78,17 @@ def update_elo(home_team, away_team, result):
     TEAM_ELO[home_team] = home_elo + K_FACTOR * (score_home - expected_home)
     TEAM_ELO[away_team] = away_elo + K_FACTOR * (score_away - expected_away)
 
+def process_match_result(home_team, away_team, home_score, away_score):
+
+    if home_score > away_score:
+        result = "home"
+    elif away_score > home_score:
+        result = "away"
+    else:
+        result = "draw"
+
+    update_elo(home_team, away_team, result)
+
 
 # -------------------------
 # EV
