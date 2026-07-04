@@ -45,3 +45,11 @@ div.innerHTML = `
 `;
 
 <p>Kelly: ${(match.kelly * 100).toFixed(1)}%</p>
+
+if (match.arbitrage) {
+    div.innerHTML += `
+        <p style="color:blue;">
+            🟢 Arbitrage: ${(match.arb_percent * 100).toFixed(2)}%
+        </p>
+    `;
+}
