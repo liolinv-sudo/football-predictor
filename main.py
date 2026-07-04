@@ -83,6 +83,7 @@ def get_matches():
         # 🔥 FILTER: visa bara +EV
         if ev > 0:
 
+kelly_value = kelly(probs["home"], odds[home])
 result.append({
     "home": home,
     "away": away,
