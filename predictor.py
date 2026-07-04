@@ -1,11 +1,27 @@
 import math
-from data import TEAM_ELO
 
 HOME_ADVANTAGE = 75
+K_FACTOR = 32
+
+# -------------------------
+# DYNAMISK ELO STORE
+# -------------------------
+TEAM_ELO = {}
 
 
 # -------------------------
-# ELO EXPECTED SCORE
+# GET / INIT ELO
+# -------------------------
+def get_elo(team):
+
+    if team not in TEAM_ELO:
+        TEAM_ELO[team] = 1500  # startvärde
+
+    return TEAM_ELO[team]
+
+
+# -------------------------
+# EXPECTED SCORE
 # -------------------------
 def expected_score(home_elo, away_elo):
 
@@ -15,48 +31,72 @@ def expected_score(home_elo, away_elo):
 
 
 # -------------------------
-# PROBABILITIES (MVP MODEL)
+# PROBABILITIES
 # -------------------------
 def get_probabilities(home_team, away_team):
 
-    home_elo = TEAM_ELO.get(home_team, 1500)
-    away_elo = TEAM_ELO.get(away_team, 1500)
+    home_elo = get_elo(home_team)
+    away_elo = get_elo(away_team)
 
     home_win = expected_score(home_elo, away_elo)
 
-    # draw baseline (MVP antagande)
     draw = 0.25
 
-    # justera så att total inte blir > 1
     home_win = home_win * 0.75
     away_win = max(0, 1 - home_win - draw)
 
-    # normalisera (säkerhet)
     total = home_win + draw + away_win
 
     return {
-        "home": round(home_win / total, 3),
-        "draw": round(draw / total, 3),
-        "away": round(away_win / total, 3)
+        "home": home_win / total,
+        "draw": draw / total,
+        "away": away_win / total
     }
 
 
 # -------------------------
-# EXPECTED VALUE
+# UPDATE ELO AFTER MATCH
+# -------------------------
+def update_elo(home_team, away_team, result):
+    """
+    result: "home", "away", "draw"
+    """
+
+    home_elo = get_elo(home_team)
+    away_elo = get_elo(away_team)
+
+    expected_home = expected_score(home_elo, away_elo)
+    expected_away = 1 - expected_home
+
+    if result == "home":
+        score_home, score_away = 1, 0
+    elif result == "away":
+        score_home, score_away = 0, 1
+    else:
+        score_home, score_away = 0.5, 0.5
+
+    TEAM_ELO[home_team] = home_elo + K_FACTOR * (score_home - expected_home)
+    TEAM_ELO[away_team] = away_elo + K_FACTOR * (score_away - expected_away)
+
+
+# -------------------------
+# EV
 # -------------------------
 def calculate_ev(probability, odds):
-
     return (probability * odds) - 1
 
 
 # -------------------------
-# KELLY CRITERION
+# KELLY
 # -------------------------
 def kelly(probability, odds):
 
     b = odds - 1
     q = 1 - probability
 
-    kelly_value = (probability * b - q) / b
+    if b <= 0:
+        return 0
 
-    return max(0, kelly_value)
+    k = (probability * b - q) / b
+
+    return max(0, k)
