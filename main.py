@@ -6,6 +6,12 @@ from fastapi.staticfiles import StaticFiles
 
 from predictor import get_probabilities, calculate_ev, kelly
 from odds import fetch_odds, get_match_odds
+from predictor import (
+    get_probabilities,
+    calculate_ev,
+    kelly,
+    process_match_result
+)
 
 app = FastAPI()
 
