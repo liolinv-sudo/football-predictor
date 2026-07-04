@@ -22,13 +22,6 @@ def root():
     return FileResponse(os.path.join(BASE_DIR, "frontend", "index.html"))
 
 
-app.mount(
-    "/frontend",
-    StaticFiles(directory=os.path.join(BASE_DIR, "frontend")),
-    name="frontend"
-)
-
-
 # -------------------------
 # ODDS + MATCH DATA
 # -------------------------
@@ -92,3 +85,21 @@ def get_matches():
     result.sort(key=lambda x: x["ev"], reverse=True)
 
     return result
+
+@app.post("/result")
+def add_result(data: dict):
+
+    home = data["home"]
+    away = data["away"]
+    home_score = data["home_score"]
+    away_score = data["away_score"]
+
+    process_match_result(home, away, home_score, away_score)
+
+    return {"status": "Elo updated"}
+
+app.mount(
+    "/frontend",
+    StaticFiles(directory=os.path.join(BASE_DIR, "frontend")),
+    name="frontend"
+)
