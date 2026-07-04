@@ -1,10 +1,11 @@
-import os
+7import os
 import requests
 from fastapi import FastAPI
 from predictor import probabilities
 from odds import fetch_odds, get_match_odds
 from fastapi.staticfiles import StaticFiles
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 app = FastAPI()
 
 API_KEY = os.getenv("API_KEY")
@@ -96,6 +97,8 @@ def calculate_ev(probability, odds):
 
 app.mount(
     "/frontend",
-    StaticFiles(directory="frontend"),
+    StaticFiles(directory=os.path.join(BASE_DIR, "frontend")),
     name="frontend"
 )
+
+
