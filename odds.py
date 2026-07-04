@@ -26,7 +26,7 @@ def fetch_odds():
     if response.status_code != 200:
         return []
 
-    return response.json()
+    return response.json().get("data", [])
 
 
 # -------------------------
