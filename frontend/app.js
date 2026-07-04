@@ -32,3 +32,12 @@ async function loadMatches() {
 }
 
 loadMatches();
+
+let evColor = match.ev > 0 ? "green" : "red";
+div.innerHTML = `
+    <h3>${match.home} - ${match.away}</h3>
+
+    <p style="color:${evColor}">
+        EV: ${match.ev}
+    </p>
+`;
