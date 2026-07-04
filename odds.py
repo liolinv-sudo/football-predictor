@@ -24,6 +24,9 @@ def fetch_odds():
     response = requests.get(BASE_URL, params=params)
 
     if response.status_code != 200:
+        return []
+
+    data = response.json()
     return response.json().get("data", [])
 
 
