@@ -24,8 +24,6 @@ def fetch_odds():
     response = requests.get(BASE_URL, params=params)
 
     if response.status_code != 200:
-        return []
-
     return response.json().get("data", [])
 
 
@@ -60,3 +58,5 @@ def get_match_odds(home, away, odds_data):
             return odds_map
 
     return None
+
+print(f"Fetched {len(odds_data)} games")
