@@ -8,6 +8,10 @@ from fastapi.staticfiles import StaticFiles
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 app = FastAPI()
 
+@app.get("/")
+def root():
+    return FileResponse("frontend/index.html")
+
 API_KEY = os.getenv("API_KEY")
 
 ODDS_API_KEY = os.getenv("ODDS_API_KEY")
