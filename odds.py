@@ -27,8 +27,7 @@ def fetch_odds():
         return []
 
     data = response.json()
-    print(f"Response type: {type(data)}")
-    return response.json().get("data", [])
+    return response.json()
 
 
 # -------------------------
