@@ -58,6 +58,8 @@ def get_matches():
 
         # odds-matchning
         odds = get_match_odds(home, away, odds_data)
+        print("MATCH:", home, "-", away)
+print("ODDS:", odds)
 
         if not odds:
             continue
