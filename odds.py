@@ -61,5 +61,3 @@ def get_match_odds(home, away, odds_data):
             return odds_map
 
     return None
-
-print(f"Fetched {len(odds_data)} games")
