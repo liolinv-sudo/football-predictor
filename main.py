@@ -65,6 +65,7 @@ def get_matches():
             continue
 
         home_odds = odds.get(home)
+        print("HOME_ODDS:", home_odds)
 
         if not home_odds:
             continue
