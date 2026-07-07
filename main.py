@@ -66,7 +66,7 @@ def get_matches():
         if not odds:
             continue
 
-       # home_odds = odds.get(home)
+        # home_odds = odds.get(home)
         print("HOME:", home)
         print("ODDS KEYS:", odds.keys())
         home_odds = odds.get(home.lower())
