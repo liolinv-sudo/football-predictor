@@ -57,6 +57,7 @@ def get_matches():
 
         # sannolikhet (Elo)
         probs = get_probabilities(home, away)
+        print("PROBS:", probs)
 
         # odds-matchning
         odds = get_match_odds(home, away, odds_data)
