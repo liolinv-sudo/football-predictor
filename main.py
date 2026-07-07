@@ -43,6 +43,7 @@ def get_matches():
     )
 
     matches = response.json().get("matches", [])
+    print("Matches fetched:", len(matches))
 
     # Hämta odds
     odds_data = fetch_odds()
