@@ -34,6 +34,7 @@ FOOTBALL_URL = "https://api.football-data.org/v4/matches"
 
 @app.get("/matches")
 def get_matches():
+    print("=== GET_MATCHES CALLED ===")
 
     # Hämta matcher
     response = requests.get(
