@@ -66,7 +66,8 @@ def get_matches():
 
         if not odds:
             continue
-            arb = detect_arbitrage(odds)
+            
+        arb = detect_arbitrage(odds)
 
         # home_odds = odds.get(home)
         print("HOME:", home)
