@@ -111,3 +111,16 @@ def kelly(probability, odds):
     k = (probability * b - q) / b
 
     return max(0, k)
+    
+    def detect_arbitrage(odds):
+    try:
+        total = (
+            1 / odds["home"] +
+            1 / odds["draw"] +
+            1 / odds["away"]
+        )
+
+        return total < 1
+
+    except:
+        return False
