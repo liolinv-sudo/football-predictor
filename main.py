@@ -96,14 +96,14 @@ def get_matches():
            # "kelly": round(kelly_value, 3)
        # })
 
-    result.append({
-    "home": home,
-    "away": away,
-    "ev": round(ev, 3),
-    "kelly": round(kelly_value, 3),
-    "arbitrage": arb,
-    "odds": odds
-})
+          result.append({
+          "home": home,
+          "away": away,
+          "ev": round(ev, 3),
+          "kelly": round(kelly_value, 3),
+          "arbitrage": arb,
+          "odds": odds
+          })
 
     # sortera bästa spel först
     result.sort(key=lambda x: x["ev"], reverse=True)
