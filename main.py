@@ -8,9 +8,9 @@ from predictor import (
     get_probabilities,
     calculate_ev,
     kelly,
-    process_match_result
+    process_match_result,
+    detect_arbitrage
 )
-
 app = FastAPI()
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -66,6 +66,7 @@ def get_matches():
 
         if not odds:
             continue
+            arb = detect_arbitrage(odds)
 
         # home_odds = odds.get(home)
         print("HOME:", home)
