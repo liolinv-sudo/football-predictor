@@ -64,7 +64,10 @@ def get_matches():
         print("MATCH:", home, "-", away)
         print("ODDS:", odds)
 
-        if not odds:
+       # if not odds:
+          #  continue
+
+        if home_odds is None:
             continue
             
         arb = detect_arbitrage(odds)
