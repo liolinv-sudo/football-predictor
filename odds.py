@@ -53,11 +53,24 @@ def get_match_odds(home, away, odds_data):
 
             outcomes = game["bookmakers"][0]["markets"][0]["outcomes"]
 
-            odds_map = {
-                normalize(o["name"]): o["price"]
-                for o in outcomes
-            }
+           # odds_map = {
+          #      normalize(o["name"]): o["price"]
+           #     for o in outcomes
+           # }
 
-            return odds_map
+               odds_map = {}
+
+               for o in outcomes:
+
+               if normalize(o["name"]) == game_home:
+               odds_map["home"] = o["price"]
+
+               elif normalize(o["name"]) == game_away:
+               odds_map["away"] = o["price"]
+
+               else:
+               odds_map["draw"] = o["price"]
+
+               return odds_map
 
     return None
