@@ -58,7 +58,7 @@ def get_match_odds(home, away, odds_data):
            #     for o in outcomes
            # }
 
-             odds_map = {}
+            odds_map = {}
 
                for o in outcomes:
 
