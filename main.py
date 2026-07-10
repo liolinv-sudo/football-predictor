@@ -99,7 +99,7 @@ def get_matches():
            # "kelly": round(kelly_value, 3)
        # })
 
-          result.append({
+    result.append({
           "home": home,
           "away": away,
           "ev": round(ev, 3),
