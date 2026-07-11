@@ -106,15 +106,45 @@ def get_matches():
            # "kelly": round(kelly_value, 3)
        # })
 
-    result.append({
-          "home": home,
-          "away": away,
-          "ev": round(ev, 3),
-          "kelly": round(kelly_value, 3),
-          "arbitrage": arb,
-          "odds": odds
+         best_ev = max(
+             ev_home,
+             ev_draw,
+             ev_away
+         )
+
+         if best_ev == ev_home:
+             bet = "home"
+             best_prob = probs["home"]
+             best_odds = odds["home"]
+
+         elif best_ev == ev_draw:
+             bet = "draw"
+             best_prob = probs["draw"]
+             best_odds = odds["draw"]
+
+         else:
+             bet = "away"
+             best_prob = probs["away"]
+             best_odds = odds["away"]
+
+          if best_ev <= 0:
+              continue
+
+          kelly_value = kelly(
+              best_prob,
+              best_odds
+          )
+        
+          result.append({
+              "home": home,
+              "away": away,
+              "ev": round(ev, 3),
+              "kelly": round(kelly_value, 3),
+              "arbitrage": arb,
+              "odds": odds
           })
 
+    
     # sortera bästa spel först
     result.sort(key=lambda x: x["ev"], reverse=True)
 
