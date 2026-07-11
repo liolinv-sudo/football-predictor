@@ -1,6 +1,6 @@
 import math
 
-HOME_ADVANTAGE = 75
+HOME_ADVANTAGE = 0
 K_FACTOR = 32
 
 # -------------------------
