@@ -6,8 +6,28 @@ K_FACTOR = 32
 # -------------------------
 # DYNAMISK ELO STORE
 # -------------------------
-TEAM_ELO = {}
-
+# TEAM_ELO = {}
+TEAM_ELO = {
+    "Spain": 2050,
+    "United States": 2000,
+    "England": 1980,
+    "Germany": 1950,
+    "France": 1930,
+    "Sweden": 1910,
+    "Japan": 1890,
+    "Brazil": 1870,
+    "Netherlands": 1860,
+    "Norway": 1820,
+    "Australia": 1800,
+    "Italy": 1790,
+    "Canada": 1780,
+    "Denmark": 1770,
+    "Switzerland": 1740,
+    "Belgium": 1710,
+    "Colombia": 1850,
+    "Argentina": 1700,
+    "Egypt": 1600
+}
 
 # -------------------------
 # GET / INIT ELO
