@@ -67,18 +67,19 @@ def get_matches():
        # if not odds:
           #  continue
 
-        if home_odds is None:
+        if not odds:
             continue
-            
+
         arb = detect_arbitrage(odds)
 
-        # home_odds = odds.get(home)
         print("HOME:", home)
         print("ODDS KEYS:", odds.keys())
-        home_odds = odds.get(home.lower())
+
+        home_odds = odds.get("home")
+
         print("HOME_ODDS:", home_odds)
 
-        if not home_odds:
+        if home_odds is None:
             continue
 
         # EV
