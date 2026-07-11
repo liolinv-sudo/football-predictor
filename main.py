@@ -83,14 +83,20 @@ def get_matches():
             continue
 
         # EV
-        ev = calculate_ev(probs["home"], home_odds)
+        ev_home = calculate_ev(
+            probs["home"],
+            odds["home"]
+        )
 
-        # endast +EV spel
-        if ev <= 0:
-            continue
+        ev_draw = calculate_ev(
+            probs["draw"],
+            odds["draw"]
+        )
 
-        # Kelly
-        kelly_value = kelly(probs["home"], home_odds)
+        ev_away = calculate_ev(
+            probs["away"],
+            odds["away"]
+        )
 
         #result.append({
           #  "home": home,
