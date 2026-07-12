@@ -85,6 +85,9 @@ def get_match_odds(home, away, odds_data):
         game_home = normalize(game.get("home_team", ""))
         game_away = normalize(game.get("away_team", ""))
 
+        print("API MATCH:", home_n, away_n)    
+        print("ODDS MATCH:", game_home, game_away)
+
         if (
             (home_n == game_home and away_n == game_away)
             or
