@@ -97,6 +97,11 @@ def get_matches():
             ev_away
         )
 
+        print("EV_HOME:", ev_home)
+        print("EV_DRAW:", ev_draw)
+        print("EV_AWAY:", ev_away)
+        print("BEST_EV:", best_ev)
+
         if best_ev == ev_home:
             bet = "home"
             best_prob = probs["home"]
