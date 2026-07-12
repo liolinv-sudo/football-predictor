@@ -29,6 +29,19 @@ def fetch_odds():
     data = response.json()
     return response.json()
 
+    print("BASE_URL:", BASE_URL)
+
+    response = requests.get(BASE_URL, params=params)
+
+    print("STATUS:", response.status_code)
+
+    data = response.json()
+
+    if len(data) > 0:
+        print("FIRST GAME:", data[0].get("home_team"), "-", data[0].get("away_team"))
+
+    return data
+
 
 # -------------------------
 # SAFE MATCH ODDS
