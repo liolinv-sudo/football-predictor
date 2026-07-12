@@ -31,12 +31,11 @@ def root():
 # -------------------------
 FOOTBALL_URL = "https://api.football-data.org/v4/matches"
 
-
 @app.get("/matches")
 def get_matches():
+
     print("=== GET_MATCHES CALLED ===")
 
-    # Hämta matcher
     response = requests.get(
         FOOTBALL_URL,
         headers={"X-Auth-Token": API_KEY}
@@ -45,7 +44,6 @@ def get_matches():
     matches = response.json().get("matches", [])
     print("Matches fetched:", len(matches))
 
-    # Hämta odds
     odds_data = fetch_odds()
 
     result = []
@@ -55,34 +53,29 @@ def get_matches():
         home = m["homeTeam"]["name"]
         away = m["awayTeam"]["name"]
 
-        # sannolikhet (Elo)
         probs = get_probabilities(home, away)
+
         print("PROBS:", probs)
 
-        # odds-matchning
         odds = get_match_odds(home, away, odds_data)
+
         print("MATCH:", home, "-", away)
         print("ODDS:", odds)
-
-       # if not odds:
-          #  continue
 
         if not odds:
             continue
 
         arb = detect_arbitrage(odds)
 
-        print("HOME:", home)
-        print("ODDS KEYS:", odds.keys())
-
-        home_odds = odds.get("home")
-
-        print("HOME_ODDS:", home_odds)
-
-        if home_odds is None:
+        # Säkerställ att alla odds finns
+        if (
+            odds.get("home") is None
+            or odds.get("draw") is None
+            or odds.get("away") is None
+        ):
             continue
 
-        # EV
+        # EV för alla utfall
         ev_home = calculate_ev(
             probs["home"],
             odds["home"]
@@ -98,57 +91,53 @@ def get_matches():
             odds["away"]
         )
 
-        #result.append({
-          #  "home": home,
-          #  "away": away,
-           # "ev": round(ev, 3),
-           # "odds": odds,
-           # "kelly": round(kelly_value, 3)
-       # })
+        best_ev = max(
+            ev_home,
+            ev_draw,
+            ev_away
+        )
 
-         best_ev = max(
-             ev_home,
-             ev_draw,
-             ev_away
-         )
+        if best_ev == ev_home:
+            bet = "home"
+            best_prob = probs["home"]
+            best_odds = odds["home"]
 
-         if best_ev == ev_home:
-             bet = "home"
-             best_prob = probs["home"]
-             best_odds = odds["home"]
+        elif best_ev == ev_draw:
+            bet = "draw"
+            best_prob = probs["draw"]
+            best_odds = odds["draw"]
 
-         elif best_ev == ev_draw:
-             bet = "draw"
-             best_prob = probs["draw"]
-             best_odds = odds["draw"]
+        else:
+            bet = "away"
+            best_prob = probs["away"]
+            best_odds = odds["away"]
 
-         else:
-             bet = "away"
-             best_prob = probs["away"]
-             best_odds = odds["away"]
+        if best_ev <= 0:
+            continue
 
-          if best_ev <= 0:
-              continue
+        kelly_value = kelly(
+            best_prob,
+            best_odds
+        )
 
-          kelly_value = kelly(
-              best_prob,
-              best_odds
-          )
-        
-          result.append({
-              "home": home,
-              "away": away,
-              "ev": round(ev, 3),
-              "kelly": round(kelly_value, 3),
-              "arbitrage": arb,
-              "odds": odds
-          })
+        result.append({
+            "home": home,
+            "away": away,
+            "bet": bet,
+            "ev": round(best_ev, 3),
+            "kelly": round(kelly_value, 3),
+            "arbitrage": arb,
+            "odds": odds
+        })
 
-    
-    # sortera bästa spel först
-    result.sort(key=lambda x: x["ev"], reverse=True)
+    result.sort(
+        key=lambda x: x["ev"],
+        reverse=True
+    )
 
     return result
+
+        
 
 @app.post("/result")
 def add_result(data: dict):
