@@ -65,9 +65,15 @@ def get_matches():
         print("MATCH:", home, "-", away)
         print("ODDS:", odds)
 
-        if not odds:
-            continue
+        #if not odds:
+         #   continue
 
+        result.append({
+            "home": home,
+            "away": away,
+            "odds": odds
+        })
+        
         arb = detect_arbitrage(odds)
 
         # Säkerställ att alla odds finns
