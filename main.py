@@ -40,6 +40,8 @@ def get_matches():
         FOOTBALL_URL,
         headers={"X-Auth-Token": API_KEY}
     )
+    print(response.status_code)
+    print(response.text[:1000])
 
     matches = response.json().get("matches", [])
     print("Matches fetched:", len(matches))
