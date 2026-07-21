@@ -20,27 +20,27 @@ def fetch_odds():
         "markets": "h2h",
         "oddsFormat": "decimal"
     }
-
-    response = requests.get(BASE_URL, params=params)
-
-    if response.status_code != 200:
-        return []
-
-    data = response.json()
-    return response.json()
-
     print("BASE_URL:", BASE_URL)
-
+    
     response = requests.get(BASE_URL, params=params)
 
     print("STATUS:", response.status_code)
 
+    if response.status_code != 200:
+        print("ERROR:", response.text)
+        return []
+
     data = response.json()
 
-    if len(data) > 0:
-        print("FIRST GAME:", data[0].get("home_team"), "-", data[0].get("away_team"))
-    
     print("ODDS COUNT:", len(data))
+
+    if len(data) > 0:
+        print(
+            "FIRST GAME:", 
+            data[0].get("home_team"), 
+            "-", 
+            data[0].get("away_team")
+        )
 
     for game in data[:20]:
         print(
@@ -48,6 +48,7 @@ def fetch_odds():
             game["home_team"],
             game["away_team"]
         )
+        
     return data
 
 
