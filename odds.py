@@ -16,7 +16,7 @@ def fetch_odds():
 
     params = {
         "apiKey": ODDS_API_KEY,
-        "regions": "eu",
+        "regions": "eu , uk , us , au",
         "markets": "h2h",
         "oddsFormat": "decimal"
     }
@@ -39,7 +39,15 @@ def fetch_odds():
 
     if len(data) > 0:
         print("FIRST GAME:", data[0].get("home_team"), "-", data[0].get("away_team"))
+    
+    print("ODDS COUNT:", len(data))
 
+    for game in data[:20]:
+        print(
+            game["sport_key"],
+            game["home_team"],
+            game["away_team"]
+        )
     return data
 
 
