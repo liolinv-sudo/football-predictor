@@ -149,6 +149,9 @@ def get_matches():
         reverse=True
     )
 
+    print("RESULT COUNT:", len(result))
+    print(result)
+    
     return result
 
         
